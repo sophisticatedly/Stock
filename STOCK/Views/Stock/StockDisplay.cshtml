@@ -1,0 +1,85 @@
+﻿@model STOCK.Models.Data
+<form action="/Stock/StockDisplay" method="post">
+    <input type="checkbox" id="pa" name="stock" value="PA">
+    <label for="PA">平安银行</label>
+    <input type="checkbox" id="mt" name="stock" value="MT">
+    <label for="MT">贵州茅台</label>
+    <input type="checkbox" id="zx" name="stock" value="ZX">
+    <label for="ZX">中信建投</label>
+    <input type="checkbox" id="hx" name="stock" value="HX">
+    <label for="HX">华兴源创</label>
+    <input type="checkbox" id="other" name="stock" value="TD">
+    <label for="TD">同达创业</label><br><br>
+    <label>起始时间:<input type="date" id="startDate" name="startDate" value="2019-01-02"></label>
+    <label>结束时间:<input type="date" id="endDate" name="endDate" value="2019-12-31"></label>
+    <div class="btnSubmit">
+        <input type="submit" value="提交">
+    </div>
+</form>
+<canvas id="ChartShow" width="400" height="400"></canvas>
+<script src="../../Scripts/chart.js"></script>
+
+<script>
+    if ('@Model.Message'.length > 0) {
+        alert('@Model.Message');
+    }
+
+    var data_PA = @Html.Raw(Model.PA_Datas);
+    var data_MT = @Html.Raw(Model.MT_Datas);
+    var data_ZX = @Html.Raw(Model.ZX_Datas);
+    var data_HX = @Html.Raw(Model.HX_Datas);
+    var data_TD = @Html.Raw(Model.TD_Datas);
+
+    var dataset1 = {
+        label: '平安银行',
+        data: data_PA,
+        borderColor: 'rgb(255, 99, 132)',
+        tension: 0.1
+    };
+    var dataset2 = {
+        label: '贵州茅台',
+        data: data_MT,
+        borderColor: 'rgb(54, 162, 235)',
+        tension: 0.1
+    };
+    var dataset3 = {
+        label: '中信建投',
+        data: data_ZX,
+        borderColor: 'rgb(255, 206, 86)',
+        tension: 0.1
+    };
+    var dataset4 = {
+        label: '华兴源创',
+        data: data_HX,
+        borderColor: 'rgb(75, 192, 192)',
+        tension: 0.1
+    };
+    var dataset5 = {
+        label: '同达创业',
+        data: data_TD,
+        borderColor: 'rgb(153, 102, 255)',
+        tension: 0.1
+    };
+
+    // 创建图表
+    var ctx = document.getElementById('ChartShow').getContext('2d');
+    var lineChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            datasets: [dataset1, dataset2, dataset3, dataset4, dataset5]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+<style>
+    .btnSubmit {
+        text-align: center
+    }
+</style>
+
